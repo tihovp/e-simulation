@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation Plinko - Prévention des jeux d'argent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            line-height: 1.5;
+            color: #10313B;
+            background-color: #F4F7FB;
+        }
+
+        .top-bar {
+            background-color: #007A3D;
+            color: white;
+            padding: 10px 0;
+            font-size: 14px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .top-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar-right {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 40px;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-section img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 12px;
+            color: #6B7280;
+            max-width: 200px;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #10313B;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #007A3D;
+        }
+
+        .btn-primary {
+            background-color: #1C7ED6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-primary:hover {
+            background-color: #1864ab;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 400;
+            border: 2px solid white;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .btn-green {
+            background-color: #007A3D;
+            color: white;
+            padding: 15px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-green:hover {
+            background-color: #005228;
+        }
+
+        main {
+            margin-top: 100px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #041018 0%, #0a1f2e 100%);
+            color: white;
+            padding: 80px 20px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text .kicker {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #FFD600;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 {
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-text .subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .hero-note {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .hero-visual {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px;
+        }
+
+        .hero-visual .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #FFD600;
+            margin-bottom: 20px;
+        }
+
+        .hero-visual .stats {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .hero-visual .stats strong {
+            color: #FFD600;
+        }
+
+        section {
+            padding: 80px 20px;
+        }
+
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #simulation {
+            background-color: white;
+        }
+
+        .simulation-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .plinko-board {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 30px 20px;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .pegs-container {
+            position: relative;
+            height: 350px;
+            margin-bottom: 20px;
+        }
+
+        .peg {
+            width: 8px;
+            height: 8px;
+            background-color: #6B7280;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .ball {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 30% 30%, #FFD600, #f59f00);
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .slots {
+            display: flex;
+            justify-content: space-around;
+            gap: 5px;
+        }
+
+        .slot {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px 5px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .slot.jackpot {
+            background-color: #FFD600;
+            border-color: #f59f00;
+        }
+
+        .slot.win {
+            background-color: #d3f9d8;
+            border-color: #61B15A;
+        }
+
+        .slot.lose {
+            background-color: #ffe3e3;
+            border-color: #fa5252;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stats-box {
+            background-color: #F4F7FB;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stats-box h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-weight: 400;
+            color: #6B7280;
+        }
+
+        .stat-value {
+            font-weight: 600;
+        }
+
+        .stat-value.negative {
+            color: #fa5252;
+        }
+
+        .stat-value.positive {
+            color: #61B15A;
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: #6B7280;
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        #risques {
+            background-color: #F4F7FB;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #007A3D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 15px;
+            color: #6B7280;
+        }
+
+        #aide {
+            background-color: white;
+        }
+
+        .aide-main {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border: 2px solid #61B15A;
+            border-radius: 16px;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .aide-main img {
+            height: 80px;
+            width: auto;
+        }
+
+        .aide-info h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #007A3D;
+            margin-bottom: 10px;
+        }
+
+        .aide-info .subtitle {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .phone-numbers {
+            font-size: 32px;
+            font-weight: 700;
+            color: #007A3D;
+            margin-bottom: 15px;
+        }
+
+        .phone-numbers div {
+            margin-bottom: 5px;
+        }
+
+        .aide-link {
+            font-size: 18px;
+            color: #1C7ED6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .aide-link:hover {
+            text-decoration: underline;
+        }
+
+        .aide-blocks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .aide-block {
+            background: #F4F7FB;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .aide-block h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #007A3D;
+        }
+
+        .qr-placeholder {
+            background: #e9ecef;
+            border: 2px dashed #6B7280;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 40px;
+            color: #6B7280;
+            font-size: 14px;
+        }
+
+        #faq {
+            background-color: #F4F7FB;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .faq-question:hover {
+            background-color: #f8f9fa;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 24px;
+            color: #007A3D;
+            transition: transform 0.3s;
+        }
+
+        .faq-question.active::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 25px;
+        }
+
+        .faq-answer.active {
+            max-height: 500px;
+            padding: 0 25px 20px 25px;
+        }
+
+        .faq-answer p {
+            font-size: 15px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        #mentions {
+            background-color: white;
+        }
+
+        #mentions .section-content {
+            font-size: 12px;
+            color: #6B7280;
+            line-height: 1.8;
+            max-width: 900px;
+        }
+
+        #mentions h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #10313B;
+        }
+
+        #mentions ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            background-color: #E5E7EB;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #10313B;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: #007A3D;
+        }
+
+        .footer-emergency {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 20px;
+        }
+
+        .chatbot-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #1C7ED6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(28,126,214,0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 1000;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(28,126,214,0.5);
+        }
+
+        .chatbot-panel {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+            max-height: 600px;
+        }
+
+        .chatbot-panel.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #1C7ED6 0%, #1864ab 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .chatbot-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .chatbot-header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            min-height: 300px;
+            max-height: 400px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .message.bot {
+            align-items: flex-start;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.bot .message-bubble {
+            background-color: #F4F7FB;
+            color: #10313B;
+        }
+
+        .message.user .message-bubble {
+            background-color: #1C7ED6;
+            color: white;
+        }
+
+        .quick-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .quick-button {
+            background: white;
+            border: 2px solid #1C7ED6;
+            color: #1C7ED6;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            text-align: left;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .quick-button:hover {
+            background-color: #1C7ED6;
+            color: white;
+        }
+
+        .chatbot-input {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 20px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .chatbot-input button {
+            background-color: #1C7ED6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .top-bar-content {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text h1 {
+                font-size: 28px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .simulation-container {
+                grid-template-columns: 1fr;
+            }
+
+            .aide-main {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .aide-main img {
+                margin: 0 auto;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            .chatbot-panel {
+                right: 20px;
+                bottom: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="top-bar-left">
+                <strong>DEMANDES D'AIDE :</strong> 514 527-0140 ou 1 800 461-0140
+            </div>
+            <div class="top-bar-right">
+                Écoute • Soutien • Information • Référence
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="public/aide au jeu.png" alt="Jeu : aide et référence">
+                <div class="logo-text">Campagne Plinko – Sensibilisation aux jeux d'argent</div>
+            </div>
+            <nav>
+                <a href="#simulation">Simulation</a>
+                <a href="#risques">Comprendre les risques</a>
+                <a href="#aide">Aide</a>
+                <a href="#faq">FAQ</a>
+                <a href="#mentions">Mentions légales</a>
+                <a href="#aide" class="btn-primary">Obtenir de l'aide</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="kicker">JEUX DE HASARD ET D'ARGENT • CASINOS EN LIGNE • PLINKO</div>
+                    <h1>Le jeu prend-il plus de place que prévu dans ta vie ?</h1>
+                    <p class="subtitle">Ici, tu peux tester une simulation de Plinko sans miser de vrai argent et voir comment, à long terme, la maison est avantagée.</p>
+                    <div class="hero-buttons">
+                        <a href="#simulation" class="btn-green">Tester la simulation Plinko</a>
+                        <a href="#aide" class="btn-secondary">Parler à quelqu'un / Besoin d'aide ?</a>
+                    </div>
+                    <p class="hero-note">Gratuit, confidentiel, 24 h/24, partout au Québec.</p>
+                </div>
+                <div class="hero-visual">
+                    <div class="label">Aperçu de la simulation</div>
+                    <div class="stats">
+                        Après 100 parties :<br>
+                        <strong>Misé : 100 $</strong><br>
+                        <strong>Gagné : ≈ 80 $</strong><br>
+                        <strong>Perte nette : ≈ 20 $</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulation">
+            <div class="section-content">
+                <h2>Simulation Plinko (sans argent réel)</h2>
+                <p class="section-subtitle">Lance des billes virtuelles et observe la mise totale, les gains totaux et le résultat net. L'objectif n'est pas de gagner, mais de comprendre comment les pertes s'accumulent.</p>
+
+                <div class="simulation-container">
+                    <div class="plinko-board">
+                        <div class="pegs-container" id="pegsContainer">
+                            <div class="ball" id="ball"></div>
+                        </div>
+                        <div class="slots">
+                            <div class="slot lose">x0<br><small>Perdu</small></div>
+                            <div class="slot lose">x0.2<br><small>Faible</small></div>
+                            <div class="slot">x0.5<br><small>50%</small></div>
+                            <div class="slot">x1<br><small>Mise</small></div>
+                            <div class="slot win">x2<br><small>Gain</small></div>
+                            <div class="slot jackpot">x5<br><small>Jackpot</small></div>
+                            <div class="slot lose">x0<br><small>Perdu</small></div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <div class="input-group">
+                            <label for="betAmount">Mise par coup (en $)</label>
+                            <input type="number" id="betAmount" value="1" min="0.1" step="0.1">
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn-green" id="launchBtn">Lancer une bille</button>
+                            <button class="btn-primary" id="simulate100Btn">Simuler 100 coups</button>
+                        </div>
+
+                        <div class="stats-box">
+                            <h3>Statistiques</h3>
+                            <div class="stat-item">
+                                <span class="stat-label">Nombre de coups</span>
+                                <span class="stat-value" id="totalRounds">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Mise totale</span>
+                                <span class="stat-value" id="totalBet">0.00 $</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Gains totaux</span>
+                                <span class="stat-value" id="totalWin">0.00 $</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Résultat net</span>
+                                <span class="stat-value" id="netResult">0.00 $</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Retour moyen</span>
+                                <span class="stat-value" id="avgReturn">0.00 $ / 1 $ misé</span>
+                            </div>
+                        </div>
+
+                        <p class="disclaimer">Cette simulation est uniquement pédagogique. Elle ne représente pas un vrai site de jeux d'argent.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="risques">
+            <div class="section-content">
+                <h2>Comprendre les risques des jeux d'argent</h2>
+                <p class="section-subtitle">Les jeux comme Plinko, les slots ou les paris sportifs sont conçus pour être divertissants… mais pas pour que le joueur gagne à long terme.</p>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">📊</div>
+                        <h3>Probabilités défavorables</h3>
+                        <p>Sur le long terme, la maison garde une marge. Même si tu gagnes parfois, la majorité des coups te font perdre de l'argent.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎯</div>
+                        <h3>Illusion de contrôle</h3>
+                        <p>On a l'impression de 'sentir' le bon moment pour jouer, mais le résultat reste aléatoire et programmé.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💸</div>
+                        <h3>Petites pertes qui s'additionnent</h3>
+                        <p>5 $ ici, 10 $ là… Sur plusieurs semaines, les montants perdus peuvent devenir importants.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">⚠️</div>
+                        <h3>Impact sur la vie quotidienne</h3>
+                        <p>Stress, conflits, dettes, perte de temps, baisse de concentration au travail ou à l'école.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="aide">
+            <div class="section-content">
+                <h2>Besoin d'aide en lien avec le jeu ?</h2>
+
+                <div class="aide-main">
+                    <img src="public/aide au jeu.png" alt="Jeu : aide et référence">
+                    <div class="aide-info">
+                        <h3>Jeu : aide et référence</h3>
+                        <p class="subtitle">Service gratuit, confidentiel, accessible partout au Québec, 24 h/24.</p>
+                        <div class="phone-numbers">
+                            <div>1 800 461-0140</div>
+                            <div style="font-size: 24px;">514 527-0140 (Montréal et environs)</div>
+                        </div>
+                        <a href="https://aidejeu.ca" target="_blank" class="aide-link">Site officiel : aidejeu.ca</a>
+                    </div>
+                </div>
+
+                <div class="aide-blocks">
+                    <div class="aide-block">
+                        <h4>Je m'inquiète pour moi</h4>
+                        <p>Tu peux appeler pour parler de ta situation, poser des questions sur tes habitudes de jeu ou obtenir du soutien. Aucun jugement, juste de l'écoute et de l'aide.</p>
+                    </div>
+                    <div class="aide-block">
+                        <h4>Je m'inquiète pour un proche</h4>
+                        <p>On peut appeler même si ce n'est pas nous qui jouons. Si tu t'inquiètes pour un ami, un membre de ta famille, les intervenants peuvent te guider.</p>
+                    </div>
+                    <div class="aide-block">
+                        <h4>Je veux des infos seulement</h4>
+                        <p>Possibilité d'obtenir de l'information sans s'engager dans un processus d'aide formel. Tu peux appeler juste pour comprendre.</p>
+                    </div>
+                </div>
+
+                <div class="qr-placeholder">
+                    Placer ici un QR code vers aidejeu.ca
+                </div>
+            </div>
+        </section>
+
+        <section id="faq">
+            <div class="section-content">
+                <h2>Questions fréquentes</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Est-ce que ce site est un vrai site de jeux d'argent ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Non. Il s'agit uniquement d'une simulation pédagogique qui illustre comment les pertes s'accumulent dans un jeu défavorable comme Plinko.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Mes résultats sur la simulation veulent-ils dire que j'ai un problème de jeu ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Non. Les résultats montrent seulement le fonctionnement mathématique du jeu. Si tu t'inquiètes pour ta façon de jouer, contacte Jeu : aide et référence pour en parler.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Est-ce que le chatbot peut remplacer un intervenant humain ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Non. Le chatbot est un outil d'information. Pour un soutien réel, il faut parler avec une personne formée en appelant 1 800 461-0140.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Le service Jeu : aide et référence est-il vraiment confidentiel ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui. Le service est gratuit, confidentiel et disponible 24 h/24, 7 jours sur 7.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Je ne suis pas certain d'avoir un problème, est-ce que je peux quand même appeler ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui. Il n'est pas nécessaire d'avoir un diagnostic pour demander de l'aide ou poser des questions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mentions">
+            <div class="section-content">
+                <h2>Mentions légales</h2>
+
+                <h3>Nature du site</h3>
+                <p>Ce site est un outil de sensibilisation visant à informer sur les risques liés aux jeux de hasard et d'argent.</p>
+
+                <h3>Simulation pédagogique</h3>
+                <ul>
+                    <li>Les simulations présentées n'impliquent aucune mise réelle et n'offrent aucun gain réel.</li>
+                    <li>Les probabilités utilisées dans la simulation sont approximatives et servent uniquement à illustrer un jeu défavorable au joueur.</li>
+                    <li>Ce site ne représente pas un véritable casino en ligne et ne permet pas de jouer avec de l'argent réel.</li>
+                </ul>
+
+                <h3>Limites et avertissements</h3>
+                <ul>
+                    <li>Ce site ne remplace pas un avis médical, psychologique ou financier professionnel.</li>
+                    <li>Pour un soutien personnalisé, il est recommandé de contacter les services officiels, notamment Jeu : aide et référence (aidejeu.ca).</li>
+                    <li>En cas de situation d'urgence ou de détresse importante, contactez immédiatement les services d'urgence de votre région.</li>
+                </ul>
+
+                <h3>Protection des données</h3>
+                <p>Le site ne collecte pas de données personnelles à travers la simulation. Si des outils de mesure d'audience anonymes sont utilisés, ils ne permettent pas d'identifier les visiteurs individuellement.</p>
+
+                <h3>Responsabilité</h3>
+                <p>L'utilisation de ce site et de ses simulations se fait sous la responsabilité de l'utilisateur. Les créateurs du site ne peuvent être tenus responsables des décisions prises suite à la consultation de ces informations.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-title">Simulation Plinko – Prévention des jeux d'argent</div>
+            <div class="footer-links">
+                <a href="#simulation">Simulation</a>
+                <a href="#aide">Aide</a>
+                <a href="#faq">FAQ</a>
+                <a href="#mentions">Mentions légales</a>
+            </div>
+            <div class="footer-emergency">
+                En cas d'urgence ou de détresse, contacte immédiatement les services d'urgence de ta région.
+            </div>
+        </div>
+    </footer>
+
+    <div class="chatbot-button" id="chatbotBtn">?</div>
+
+    <div class="chatbot-panel" id="chatbotPanel">
+        <div class="chatbot-header">
+            <h3>Assistant info-jeu</h3>
+            <p>Outil pédagogique – ne remplace pas un intervenant humain.</p>
+        </div>
+        <div class="chatbot-messages" id="chatMessages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="chatInput" placeholder="Écris ton message...">
+            <button id="chatSend">Envoyer</button>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Plinko simulation
+        const outcomes = [
+            { multiplier: 0, probability: 0.25, label: 'x0' },
+            { multiplier: 0.2, probability: 0.15, label: 'x0.2' },
+            { multiplier: 0.5, probability: 0.20, label: 'x0.5' },
+            { multiplier: 1, probability: 0.15, label: 'x1' },
+            { multiplier: 2, probability: 0.20, label: 'x2' },
+            { multiplier: 5, probability: 0.05, label: 'x5' },
+            { multiplier: 0, probability: 0.00, label: 'x0' }
+        ];
+
+        let stats = {
+            rounds: 0,
+            totalBet: 0,
+            totalWin: 0
+        };
+
+        function createPegs() {
+            const container = document.getElementById('pegsContainer');
+            const rows = 8;
+            const pegSpacing = 40;
+
+            for (let row = 0; row < rows; row++) {
+                const pegsInRow = row + 3;
+                for (let col = 0; col < pegsInRow; col++) {
+                    const peg = document.createElement('div');
+                    peg.className = 'peg';
+                    const x = (container.offsetWidth / 2) - (pegsInRow * pegSpacing / 2) + (col * pegSpacing);
+                    const y = 30 + (row * 40);
+                    peg.style.left = x + 'px';
+                    peg.style.top = y + 'px';
+                    container.appendChild(peg);
+                }
+            }
+        }
+
+        function getRandomOutcome() {
+            const random = Math.random();
+            let cumulativeProbability = 0;
+
+            for (let outcome of outcomes) {
+                cumulativeProbability += outcome.probability;
+                if (random < cumulativeProbability) {
+                    return outcome;
+                }
+            }
+            return outcomes[0];
+        }
+
+        function animateBall(callback) {
+            const ball = document.getElementById('ball');
+            ball.style.display = 'block';
+            ball.style.top = '0';
+            ball.style.left = '50%';
+
+            let position = 0;
+            const animationDuration = 1500;
+            const startTime = Date.now();
+
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / animationDuration, 1);
+
+                position = progress * 350;
+                ball.style.top = position + 'px';
+
+                const wobble = Math.sin(progress * 20) * 30;
+                ball.style.left = `calc(50% + ${wobble}px)`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ball.style.display = 'none';
+                    if (callback) callback();
+                }
+            }
+
+            animate();
+        }
+
+        function playRound(animate = true) {
+            const betAmount = parseFloat(document.getElementById('betAmount').value) || 1;
+            const outcome = getRandomOutcome();
+            const winAmount = betAmount * outcome.multiplier;
+
+            stats.rounds++;
+            stats.totalBet += betAmount;
+            stats.totalWin += winAmount;
+
+            updateStats();
+
+            if (animate) {
+                animateBall();
+            }
+        }
+
+        function updateStats() {
+            const netResult = stats.totalWin - stats.totalBet;
+            const avgReturn = stats.totalBet > 0 ? (stats.totalWin / stats.totalBet).toFixed(2) : '0.00';
+
+            document.getElementById('totalRounds').textContent = stats.rounds;
+            document.getElementById('totalBet').textContent = stats.totalBet.toFixed(2) + ' $';
+            document.getElementById('totalWin').textContent = stats.totalWin.toFixed(2) + ' $';
+
+            const netElement = document.getElementById('netResult');
+            netElement.textContent = netResult.toFixed(2) + ' $';
+            netElement.className = 'stat-value ' + (netResult < 0 ? 'negative' : netResult > 0 ? 'positive' : '');
+
+            document.getElementById('avgReturn').textContent = avgReturn + ' $ / 1 $ misé';
+        }
+
+        document.getElementById('launchBtn').addEventListener('click', () => {
+            playRound(true);
+        });
+
+        document.getElementById('simulate100Btn').addEventListener('click', () => {
+            for (let i = 0; i < 100; i++) {
+                playRound(false);
+            }
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+
+                document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+                document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('active'));
+
+                if (!isActive) {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        // Chatbot
+        const chatbotBtn = document.getElementById('chatbotBtn');
+        const chatbotPanel = document.getElementById('chatbotPanel');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+
+        const responses = {
+            'risque': 'Les jeux d\'argent comportent plusieurs risques : probabilités toujours en faveur de la maison, illusion de contrôle, pertes qui s\'accumulent, et impacts sur le quotidien (stress, dettes, conflits). Pour en parler avec une personne formée, contacte le 1 800 461-0140 ou visite aidejeu.ca.',
+            'aide': 'Pour obtenir de l\'aide, tu peux appeler Jeu : aide et référence au 1 800 461-0140 (ou 514 527-0140 à Montréal). Le service est gratuit, confidentiel et disponible 24h/24. Tu peux aussi visiter aidejeu.ca.',
+            'proche': 'Si tu t\'inquiètes pour un proche, tu peux appeler Jeu : aide et référence au 1 800 461-0140. Les intervenants peuvent te guider sur comment aborder la situation et offrir du soutien, même si ce n\'est pas toi qui joues.',
+            'default': 'Je suis un outil d\'information automatisé. Pour un soutien réel et personnalisé, contacte Jeu : aide et référence au 1 800 461-0140 ou visite aidejeu.ca. Le service est gratuit et confidentiel.'
+        };
+
+        function addMessage(text, isBot = true) {
+            const message = document.createElement('div');
+            message.className = 'message ' + (isBot ? 'bot' : 'user');
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+
+            message.appendChild(bubble);
+            chatMessages.appendChild(message);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addQuickButtons() {
+            const message = document.createElement('div');
+            message.className = 'message bot';
+
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.className = 'quick-buttons';
+
+            const buttons = [
+                { text: 'Comprendre les risques', key: 'risque' },
+                { text: 'Comment obtenir de l\'aide ?', key: 'aide' },
+                { text: 'Je m\'inquiète pour un proche', key: 'proche' }
+            ];
+
+            buttons.forEach(btn => {
+                const button = document.createElement('button');
+                button.className = 'quick-button';
+                button.textContent = btn.text;
+                button.addEventListener('click', () => {
+                    addMessage(btn.text, false);
+                    setTimeout(() => addMessage(responses[btn.key]), 500);
+                });
+                buttonsContainer.appendChild(button);
+            });
+
+            message.appendChild(buttonsContainer);
+            chatMessages.appendChild(message);
+        }
+
+        function initChatbot() {
+            chatMessages.innerHTML = '';
+            addMessage('Bonjour ! Je peux t\'expliquer les risques des jeux d\'argent et te rappeler comment joindre Jeu : aide et référence.');
+            setTimeout(() => {
+                addMessage('Pour parler à une personne en vrai, compose 1 800 461-0140 (ou 514 527-0140 à Montréal) ou visite aidejeu.ca.');
+                addQuickButtons();
+            }, 1000);
+        }
+
+        function handleUserMessage() {
+            const text = chatInput.value.trim().toLowerCase();
+            if (!text) return;
+
+            addMessage(chatInput.value, false);
+            chatInput.value = '';
+
+            setTimeout(() => {
+                let response = responses.default;
+
+                if (text.includes('risque') || text.includes('danger') || text.includes('problème')) {
+                    response = responses.risque;
+                } else if (text.includes('aide') || text.includes('appeler') || text.includes('contact')) {
+                    response = responses.aide;
+                } else if (text.includes('proche') || text.includes('ami') || text.includes('famille')) {
+                    response = responses.proche;
+                }
+
+                addMessage(response);
+            }, 500);
+        }
+
+        chatbotBtn.addEventListener('click', () => {
+            const isActive = chatbotPanel.classList.toggle('active');
+            if (isActive && chatMessages.children.length === 0) {
+                initChatbot();
+            }
+        });
+
+        chatSend.addEventListener('click', handleUserMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleUserMessage();
+            }
+        });
+
+        // Initialize pegs
+        window.addEventListener('load', createPegs);
+    </script>
+</body>
+</html>
